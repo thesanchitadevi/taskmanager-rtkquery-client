@@ -1,7 +1,17 @@
 import { AddTaskModal } from "@/components/modules/tasks/AddTaskModal";
+import TaskCard from "@/components/modules/tasks/TaskCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useGetTasksQuery } from "@/redux/api/baseApi";
+import { ITask } from "@/types/types";
 
 const Tasks = () => {
+  const { data, isLoading, isError } = useGetTasksQuery(undefined);
+  console.log({ data, isLoading, isError });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -16,6 +26,8 @@ const Tasks = () => {
         </Tabs>
         <AddTaskModal />
       </div>
+      {!isLoading &&
+        data.tasks.map((task: ITask) => <TaskCard key={task.id} task={task} />)}
     </>
   );
 };

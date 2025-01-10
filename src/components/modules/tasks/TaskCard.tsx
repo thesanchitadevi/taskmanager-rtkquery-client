@@ -1,13 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import {
-  deleteTask,
-  toggleCompleteStatus,
-  updateTask,
-} from "@/redux/features/task/taskSlice";
-import { selectUsers } from "@/redux/features/user/userSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ITask } from "@/types/types";
 import { Edit2, Trash2 } from "lucide-react";
 
@@ -16,11 +9,6 @@ interface IProps {
 }
 
 const TaskCard = ({ task }: IProps) => {
-  const dispatch = useAppDispatch();
-
-  const users = useAppSelector(selectUsers);
-  const assignedUser = users.find((user) => user.id === task.assignTo);
-
   return (
     <div className="border rounded-lg shadow-sm p-4 my-4">
       <div className="flex items-center justify-between">
@@ -42,27 +30,17 @@ const TaskCard = ({ task }: IProps) => {
         </div>
 
         <div className="flex items-center">
-          <Button
-            onClick={() => dispatch(updateTask(task))}
-            variant="link"
-            className="text-gray-500"
-            size="sm"
-          >
+          <Button variant="link" className="text-gray-500" size="sm">
             <Edit2 size={16} />
           </Button>
-          <Button
-            onClick={() => dispatch(deleteTask(task.id))}
-            variant="link"
-            className="text-red-500"
-            size="sm"
-          >
+          <Button variant="link" className="text-red-500" size="sm">
             <Trash2 size={16} />
           </Button>
-          <Checkbox onClick={() => dispatch(toggleCompleteStatus(task.id))} />
+          <Checkbox />
         </div>
       </div>
       <p className="text-md text-gray-400 mt-2">
-        {assignedUser ? `Assigned to ${assignedUser.name}` : "Not assigned"}
+        {/* {assignedUser ? `Assigned to ${assignedUser.name}` : "Not assigned"} */}
       </p>
       <p className="text-sm text-gray-500 mt-2">{task.description}</p>
     </div>
