@@ -17,24 +17,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { addUser } from "@/redux/features/user/userSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { IUser } from "@/types/types";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export function AddUserModal() {
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm();
-
-  const dispatch = useAppDispatch();
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    dispatch(addUser(data as IUser));
-    setIsOpen(false);
-    form.reset();
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -50,7 +39,7 @@ export function AddUserModal() {
           <DialogDescription> Add a new user </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="space-y-2">
             <FormField
               control={form.control}
               name="name"

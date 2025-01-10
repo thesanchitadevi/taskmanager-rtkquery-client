@@ -31,27 +31,14 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { addTask } from "@/redux/features/task/taskSlice";
-import { selectUsers } from "@/redux/features/user/userSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { ITask } from "@/types/types";
 import { format } from "date-fns";
 import { CalendarIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export function AddTaskModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const users = useAppSelector(selectUsers);
   const form = useForm();
-
-  const dispatch = useAppDispatch();
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    dispatch(addTask(data as ITask));
-    setIsOpen(false);
-    form.reset();
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -67,7 +54,7 @@ export function AddTaskModal() {
           <DialogDescription> Add a new task to your list </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="space-y-2">
             <FormField
               control={form.control}
               name="title"
@@ -172,9 +159,9 @@ export function AddTaskModal() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {users.map((user) => (
+                      {/* {users.map((user) => (
                         <SelectItem value={user.id}>{user.name}</SelectItem>
-                      ))}
+                      ))} */}
                     </SelectContent>
                   </Select>
                 </FormItem>

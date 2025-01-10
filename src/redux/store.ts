@@ -1,21 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./features/counter/counterSlice";
-import taskReducer from "./features/task/taskSlice";
-import userReducer from "./features/user/userSlice";
+import { baseApi } from "./api/baseApi";
 
 export const store = configureStore({
-  // reducer: {
-  //   [baseApi.reducerPath]: baseApi.reducer,
-  // },
-
-  // for slice reducers
   reducer: {
-    counter: counterReducer,
-    todoTasks: taskReducer,
-    users: userReducer,
+    [baseApi.reducerPath]: baseApi.reducer,
   },
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware().concat(baseApi.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(baseApi.middleware),
 });
 
 // 'RootState' is the type of the whole state of the store
