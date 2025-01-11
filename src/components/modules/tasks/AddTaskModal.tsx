@@ -31,14 +31,32 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useCreateTaskMutation } from "@/redux/api/baseApi";
 import { format } from "date-fns";
 import { CalendarIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 export function AddTaskModal() {
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm();
+
+  const [createTask, { data, isLoading, isError }] = useCreateTaskMutation();
+
+  console.log("Data", data);
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const taskData = {
+      ...data,
+      isCompleted: false,
+    };
+
+    const res = await createTask(taskData).unwrap();
+    console.log("res", res);
+
+    setIsOpen(false);
+    form.reset();
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -54,7 +72,7 @@ export function AddTaskModal() {
           <DialogDescription> Add a new task to your list </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-2">
+          <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="title"
@@ -143,30 +161,7 @@ export function AddTaskModal() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="assignTo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Assigned To</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select User" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {/* {users.map((user) => (
-                        <SelectItem value={user.id}>{user.name}</SelectItem>
-                      ))} */}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
+
             <DialogFooter className="mt-2">
               <Button type="submit">Save changes</Button>
             </DialogFooter>
