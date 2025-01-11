@@ -50,3 +50,24 @@ npm install @reduxjs/toolkit react-redux
 
 - Query => Automatically caches data.
 - Mutation => Does not cache by default; requires manual updates.
+
+## Caching in Redux
+
+- What is Caching?
+
+Caching in Redux (via RTK Query) refers to storing server data in the Redux store so that it can be reused without making redundant network requests.
+It improves performance and reduces server load by retrieving data from the local cache instead of repeatedly fetching it from the server.
+
+#### Key Terms in RTK Query Caching
+
+1. `pollingInterval`
+   Defines how frequently (in milliseconds) the data should be fetched from the server.
+   Useful for keeping data up-to-date when frequent changes are expected on the server.
+
+2. `refetchOnMountOrArgChange`
+   Determines whether the data should be fetched again:
+   When the component is mounted.
+   When the argument passed to the query changes.
+
+3. `refetchOnReconnect`
+   Specifies whether to refetch data when the network reconnects after being offline.
